@@ -34,7 +34,7 @@
             <plugin>
                 <groupId>org.apache.nifi</groupId>
                 <artifactId>nifi-nar-maven-plugin</artifactId>
-                <version>${nifi.version}</version>
+                <version>${nifi.nar.plugin.version}</version>
                 <extensions>true</extensions>
             </plugin>
         </plugins>

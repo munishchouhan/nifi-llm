@@ -56,6 +56,14 @@ public class InvokeLLMProcessor extends AbstractProcessor {
                 .build();
     };
 
+    private static final org.apache.nifi.components.Validator OPTIONAL_NON_EMPTY_VALIDATOR = (subject, input, context) -> {
+        return new org.apache.nifi.components.ValidationResult.Builder()
+                .subject(subject)
+                .input(input)
+                .valid(true)
+                .build();
+    };
+
     private static final org.apache.nifi.components.Validator INTEGER_VALIDATOR = (subject, input, context) -> {
         boolean valid = true;
         if (input == null || input.trim().isEmpty()) {
@@ -89,6 +97,7 @@ public class InvokeLLMProcessor extends AbstractProcessor {
             .required(false)
             .sensitive(true)
             .expressionLanguageSupported(ExpressionLanguageScope.VARIABLE_REGISTRY)
+            .addValidator(OPTIONAL_NON_EMPTY_VALIDATOR)
             .build();
 
     public static final PropertyDescriptor API_BASE_URL = new PropertyDescriptor.Builder()

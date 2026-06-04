@@ -22,6 +22,8 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <nifi.version>1.23.2</nifi.version>
+        <nifi.processor.utils.version>1.15.3</nifi.processor.utils.version>
+        <nifi.nar.plugin.version>2.3.0</nifi.nar.plugin.version>
         <httpclient5.version>5.3.1</httpclient5.version>
         <jackson.version>2.17.0</jackson.version>
         <junit.version>4.13.2</junit.version>
@@ -38,7 +40,7 @@
             <dependency>
                 <groupId>org.apache.nifi</groupId>
                 <artifactId>nifi-processor-utils</artifactId>
-                <version>${nifi.version}</version>
+                <version>${nifi.processor.utils.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents.client5</groupId>
