@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
+          cache: maven
+
+      - name: Build package
+        run: mvn -B -ntp clean package
+
+      - name: Create release notes body
+        id: notes
+        run: |
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "Automated release for ${GITHUB_REF_NAME}." >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "Artifacts:" >> $GITHUB_OUTPUT
+          echo "- NiFi NAR package" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          body: ${{ steps.notes.outputs.body }}
+          files: |
+            nifi-llm-nar/target/*.nar
+
+      - name: Upload package artifact (manual runs)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: nifi-llm-nar
+          path: nifi-llm-nar/target/*.nar
